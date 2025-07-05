@@ -1,7 +1,5 @@
 # C++ Style Guide
 
----
-
 ## 1. General Guidelines
 
 - `main()` should only control program flow; move logic to separate classes/functions
@@ -13,8 +11,6 @@
 
 - Comments: use Doxygen-style or `//` comments to describe intentions
 - Use TODO comments for temporary or imperfect solutions (e.g., `// TODO: task`)
-
----
 
 ## 2. Formatting
 
@@ -53,8 +49,6 @@ public:
     void Render();
 };
 ```
-
----
 
 ## 3. Header Structure & Include Guards
 
@@ -98,8 +92,6 @@ namespace my_project
 
 #endif // MY_PROJECT_HTTP_SERVER_H_
 ```
-
----
 
 ## 4. Header Comments for main.cpp
 
@@ -148,8 +140,6 @@ Notes:
 - Use PascalCase for classes, functions, and type names
 - Use snake\_case for everything else
 
----
-
 ## 6. Type Usage
 
 **General:**
@@ -189,7 +179,6 @@ Notes:
 | intptr\_t / uintptr\_t             | Platform dependent (e.g. 32/64-bit)                  | Integer type capable of storing a pointer | -           |
 | ptrdiff\_t / size\_t               | -2ⁿ⁻¹ to 2ⁿ⁻¹-1 / 0 to 2ⁿ-1 (architecture dependent) | pointer subtraction / object/array sizes  | `<cstddef>` |
 
----
 
 ## 7. Error Handling
 
