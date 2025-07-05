@@ -88,7 +88,7 @@ namespace my_project
         // exampleCode
     };
 
-} // namespace my_project
+} // !my_project
 
 #endif // MY_PROJECT_HTTP_SERVER_H_
 ```
