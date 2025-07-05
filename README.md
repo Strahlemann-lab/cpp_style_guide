@@ -111,8 +111,6 @@ Example:
 //
 ```
 
----
-
 ## 5. Naming Conventions
 
 | Identifier Type  | Example           | Convention                    |
