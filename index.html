@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>C++ Style Guide</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 960px;
+            margin: auto;
+        }
+
+        h1, h2, h3, h4 {
+            color: #f0f6fc;
+            margin-top: 2rem;
+        }
+
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code, pre {
+            background-color: #161b22;
+            color: #c9d1d9;
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+        }
+
+        pre code {
+            padding: 0em;
+        }
+
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        table, th, td {
+            border: 1px solid #30363d;
+        }
+
+        th, td {
+            padding: 0.6rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21262d;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #21262d;
+            margin: 2rem 0;
+        }
+
+        tr:not(:nth-child(even)) {background-color: #000;}
+
+        blockquote {
+            border-left: 4px solid #30363d;
+            padding-left: 1rem;
+            color: #8b949e;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>C++ Style Guide</h1>
+<hr>
+<h2>1. General Guidelines</h2>
+<ul>
+<li><code>main()</code> should only control program flow; move logic to separate classes/functions</li>
+<li>Separate interface (header) and implementation (source) files</li>
+<li>Functions should be small, clear, and testable</li>
+<li>Prefer modern C++ features: auto, range-based for, enum class, std::array, std::unique_ptr,<br>std::jthread, etc.</li>
+<li>Do not use <code>using namespace std;</code> or other global using directives</li>
+<li>Comments: use Doxygen-style or <code>//</code> comments to describe intentions</li>
+<li>Use TODO comments for temporary or imperfect solutions (e.g., <code>// TODO: task</code>)</li>
+</ul>
+<h2>2. Formatting</h2>
+<ul>
+<li>Non-ASCII characters should be rare; always use UTF-8 encoding</li>
+<li>Limit line length to <strong>120 characters</strong></li>
+<li>Use only <strong>spaces</strong>, with <strong>4-space indentation</strong></li>
+<li>Maintain consistent spacing: after commas, around binary operators, and after control keywords<br>Examples: <code>a, b, c</code>, <code>if (x == y) {}</code>, <code>value = a + b</code>, <code>for (auto o : objects) {}</code></li>
+<li>Always place opening braces on a new line (next line brace style)<br>Applies to: if, for, while, functions, classes, structs, namespaces, etc.</li>
+<li>Always add an end-of-block comment to namespaces and include guards</li>
+<li></li>
+</ul>
+<pre><code class="language-hpp">namespace definitions
+{
+    // code
+
+} // !definitions
+</code></pre>
+<ul>
+<li>Order class members by access level: private → protected → public</li>
+<li>For structs, reverse order: public → protected → private<br>This increases visibility and avoids accidental exposure:</li>
+</ul>
+<pre><code class="language-hpp">class Rectangle
+{
+    int a, b, c;
+
+protected:
+    void Load();
+    bool HasSize();
+
+public:
+    void Render();
+};
+</code></pre>
+<h2>3. Header Structure &amp; Include Guards</h2>
+<ul>
+<li>Header files must use <code>.hpp</code> extension</li>
+<li><strong>Separate interface/declaration (<code>.hpp</code>) from implementation (<code>.cpp</code>)</strong></li>
+<li>No implementation in header files (except templates)</li>
+<li>Do not use <code>using</code> directives in headers</li>
+<li>All headers must use include guards to avoid multiple inclusion</li>
+<li>Format for guard macro: <code>&lt;PROJECT&gt;_&lt;PATH&gt;_&lt;FILE&gt;_H_</code></li>
+</ul>
+<p>Header structure should follow this order:</p>
+<ol>
+<li>Include guard</li>
+<li>Include ordering:<ol>
+<li>Own headers</li>
+<li>C system headers (e.g., <code>&lt;cstdint&gt;</code>)</li>
+<li>C++ standard library headers</li>
+<li>Other libraries</li>
+</ol>
+</li>
+<li>Declaration</li>
+</ol>
+<p>Example:</p>
+<pre><code class="language-hpp">#ifndef MY_PROJECT_HTTP_SERVER_H_
+#define MY_PROJECT_HTTP_SERVER_H_
+
+#include &quot;my_project/base/logger.h&quot;
+
+#include &lt;cstdint&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+
+namespace my_project
+{
+    class HttpServer
+    {
+        // exampleCode
+    };
+
+} // !my_project
+
+#endif // !MY_PROJECT_HTTP_SERVER_H_
+</code></pre>
+<h2>4. Header Comments for main.cpp</h2>
+<p>Each main source file (e.g., <code>main.cpp</code>) should begin with a comment block:</p>
+<pre><code class="language-cpp">//
+// @name       : project_main
+// @description: Main entry point for project
+// @author     : name
+// @version    : 1.0.0
+// @date       : 0000-12-31
+// @git-hub    : github.com/user/project
+// @license    : MIT
+//
+</code></pre>
+<h2>5. Naming Conventions</h2>
+<p><strong>General:</strong></p>
+<ul>
+<li>Match file names to class names (e.g., <code>http_server.hpp</code>, <code>http_server.cpp</code>)</li>
+<li>Avoid abbreviations or unclear names</li>
+<li>Names must be descriptive and consistent</li>
+<li>Use PascalCase for classes, functions, structs, enums and type aliases</li>
+<li>Use UPPER_CASE_WITH_UNDERSCORE for macros, constants and enums values</li>
+<li>Use snake_case for everything else</li>
+</ul>
+<p><strong>Naming Conventions Overview:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Identifier Type</th>
+<th>Example</th>
+<th>Convention</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Macros</td>
+<td>MAX_BUFFER_SIZE</td>
+<td>UPPER_CASE_WITH_UNDERSCORE</td>
+</tr>
+<tr>
+<td>Constants</td>
+<td>MAX_SPEED_LIMIT</td>
+<td>UPPER_CASE_WITH_UNDERSCORE</td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>current_speed</td>
+<td>snake_case</td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td>file_path</td>
+<td>snake_case</td>
+</tr>
+<tr>
+<td>Functions</td>
+<td>CalculateArea</td>
+<td>PascalCase</td>
+</tr>
+<tr>
+<td>Classes</td>
+<td>HttpServer</td>
+<td>PascalCase</td>
+</tr>
+<tr>
+<td>Structs</td>
+<td>AudioConfig</td>
+<td>PascalCase</td>
+</tr>
+<tr>
+<td>Enums</td>
+<td>ErrorCode</td>
+<td>PascalCase</td>
+</tr>
+<tr>
+<td>Enum Values</td>
+<td>ENUM_VALUE_ONE</td>
+<td>UPPER_CASE_WITH_UNDERSCORE</td>
+</tr>
+<tr>
+<td>Member Variables</td>
+<td>current_speed_</td>
+<td>snake_case_</td>
+</tr>
+<tr>
+<td>Namespaces</td>
+<td>my_project</td>
+<td>snake_case</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>T</td>
+<td>Capital single letter</td>
+</tr>
+<tr>
+<td>Type Aliases</td>
+<td>MyCallback</td>
+<td>PascalCase</td>
+</tr>
+<tr>
+<td>Files</td>
+<td>https_server.hpp</td>
+<td>snake_case</td>
+</tr>
+</tbody></table>
+<h2>6. Type Usage</h2>
+<p><strong>General:</strong></p>
+<ul>
+<li>Use <strong>classic types (int, char, bool, etc.)</strong> by default</li>
+<li>Use <strong>fixed-width types (int32_t, uint64_t, etc.) only when width is critical</strong></li>
+<li>Always <code>#include &lt;cstdint&gt;</code> when using fixed-width types</li>
+<li>Use <code>size_t</code> and <code>ptrdiff_t</code> for sizes and pointer arithmetic</li>
+</ul>
+<p><strong>Type Overview:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Classic Type</th>
+<th>Value Range (signed / unsigned)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>char / unsigned char</td>
+<td>-128 to 127 / 0 to 255</td>
+<td>Basic character type (usually 8 bit)</td>
+</tr>
+<tr>
+<td>short / unsigned short</td>
+<td>-32,768 to 32,767 / 0 to 65,535</td>
+<td>At least 16-bit integers</td>
+</tr>
+<tr>
+<td>int / unsigned int</td>
+<td>-2,147,483,648 to 2,147,483,647 / 0 to 4,294,967,295</td>
+<td>At least 16 or 32 bit integers</td>
+</tr>
+<tr>
+<td>long / unsigned long</td>
+<td>Platform dependent (≥32 bit)</td>
+<td>At least 32-bit integers</td>
+</tr>
+<tr>
+<td>long long / unsigned long long</td>
+<td>±9.2×10¹⁸ / 0 to ~1.8×10¹⁹</td>
+<td>At least 64-bit integers</td>
+</tr>
+<tr>
+<td>float</td>
+<td>±1.2×10⁻³⁸ to ±3.4×10³⁸</td>
+<td>32-bit IEEE 754 floating point</td>
+</tr>
+<tr>
+<td>double</td>
+<td>±2.2×10⁻³⁰⁸ to ±1.8×10³⁰⁸</td>
+<td>64-bit IEEE 754 floating point</td>
+</tr>
+<tr>
+<td>long double</td>
+<td>Implementation-defined (≥ double)</td>
+<td>Extended precision float</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>Fixed-width Type</th>
+<th>Value Range (signed / unsigned)</th>
+<th>Description</th>
+<th>Include</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int8_t / uint8_t</td>
+<td>-128 to 127 / 0 to 255</td>
+<td>Exactly 8-bit integers</td>
+<td><code>&lt;cstdint&gt;</code></td>
+</tr>
+<tr>
+<td>int16_t / uint16_t</td>
+<td>-32,768 to 32,767 / 0 to 65,535</td>
+<td>Exactly 16-bit integers</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int32_t / uint32_t</td>
+<td>-2,147,483,648 to 2,147,483,647 / 0 to 4,294,967,295</td>
+<td>Exactly 32-bit integers</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int64_t / uint64_t</td>
+<td>±9.2×10¹⁸ / 0 to ~1.8×10¹⁹</td>
+<td>Exactly 64-bit integers</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_least8_t / uint_least8_t</td>
+<td>≥ -128 to ≥ 127 / ≥ 0 to ≥ 255</td>
+<td>Smallest type with ≥8 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_least16_t / uint_least16_t</td>
+<td>≥ -32,768 to ≥ 32,767 / ≥ 0 to ≥ 65,535</td>
+<td>Smallest type with ≥16 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_least32_t / uint_least32_t</td>
+<td>≥ -2.1×10⁹ to ≥ 2.1×10⁹ / ≥ 0 to ≥ 4.2×10⁹</td>
+<td>Smallest type with ≥32 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_least64_t / uint_least64_t</td>
+<td>≥ ±9×10¹⁸ / ≥ 0 to ~1.8×10¹⁹</td>
+<td>Smallest type with ≥64 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_fast8_t / uint_fast8_t</td>
+<td>Platform dependent, ≥8 bits</td>
+<td>Fastest type with ≥8 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_fast16_t / uint_fast16_t</td>
+<td>Platform dependent, ≥16 bits</td>
+<td>Fastest type with ≥16 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_fast32_t / uint_fast32_t</td>
+<td>Platform dependent, ≥32 bits</td>
+<td>Fastest type with ≥32 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>int_fast64_t / uint_fast64_t</td>
+<td>Platform dependent, ≥64 bits</td>
+<td>Fastest type with ≥64 bits</td>
+<td>-</td>
+</tr>
+<tr>
+<td>intptr_t / uintptr_t</td>
+<td>Platform dependent (e.g. 32/64-bit)</td>
+<td>Integer type capable of storing a pointer</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ptrdiff_t / size_t</td>
+<td>-2ⁿ⁻¹ to 2ⁿ⁻¹-1 / 0 to 2ⁿ-1 (architecture dependent)</td>
+<td>pointer subtraction / object/array sizes</td>
+<td><code>&lt;cstddef&gt;</code></td>
+</tr>
+</tbody></table>
+<h2>7. Error Handling</h2>
+<ul>
+<li>Avoid exceptions (<code>try/catch</code>) unless absolutely necessary (e.g., third-party libraries)</li>
+<li>Handle errors via return values or status objects (e.g., <code>Result&lt;T&gt;</code>, <code>optional&lt;T&gt;</code>, <code>bool + enum</code>)</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-cpp">struct Result
+{
+    bool success;
+    std::string error_message;
+};
+
+Result ReadFile(const std::string&amp; path);
+
+if (!result.success)
+{
+    logger_.LogError(result.error_message);
+}
+
+// Or:
+
+bool ReadFile(const std::string&amp; path);
+
+if (!ReadFile(path))
+{
+    logger_.LogError(&quot;Read failed&quot;);
+}
+</code></pre>
+<ul>
+<li>Use <code>assert()</code> only for debug checks, not for runtime error handling</li>
+<li>Always manage resources via RAII (e.g., smart pointers)</li>
+</ul>
+
+</body>
+</html>
+
