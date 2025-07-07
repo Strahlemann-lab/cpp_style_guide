@@ -88,12 +88,19 @@
 
 <h1>C++ Style Guide</h1>
 <hr>
+<p>
+    This style guide is heavily based on the official 
+    <a href="https://google.github.io/styleguide/cppguide.html" target="_blank">Google C++ Style Guide</a>.
+    All rules defined here take precedence over Google's.  
+    For any topics not explicitly covered in this document, the corresponding rules from the Google guide apply.
+</p>
 <h2>1. General Guidelines</h2>
 <ul>
 <li><code>main()</code> should only control program flow; move logic to separate classes/functions</li>
 <li>Separate interface (header) and implementation (source) files</li>
 <li>Functions should be small, clear, and testable</li>
 <li>Prefer modern C++ features: auto, range-based for, enum class, std::array, std::unique_ptr,<br>std::jthread, etc.</li>
+<li>Always manage resources via RAII (e.g., smart pointers)</li>
 <li>Do not use <code>using namespace std;</code> or other global using directives</li>
 <li>Comments: use Doxygen-style or <code>//</code> comments to describe intentions</li>
 <li>Use TODO comments for temporary or imperfect solutions (e.g., <code>// TODO: task</code>)</li>
@@ -428,8 +435,9 @@ namespace my_project
 </tbody></table>
 <h2>7. Error Handling</h2>
 <ul>
-<li>Avoid exceptions (<code>try/catch</code>) unless absolutely necessary (e.g., third-party libraries)</li>
+<li>Avoid exceptions (<code>try/catch</code>) unless this is absolutely necessary (e.g., third-party libraries)</li>
 <li>Handle errors via return values or status objects (e.g., <code>Result&lt;T&gt;</code>, <code>optional&lt;T&gt;</code>, <code>bool + enum</code>)</li>
+<li>Use <code>assert()</code> only for debug checks, not for runtime error handling</li>
 </ul>
 <p>Example:</p>
 <pre><code class="language-cpp">struct Result
@@ -454,10 +462,6 @@ if (!ReadFile(path))
     logger_.LogError(&quot;Read failed&quot;);
 }
 </code></pre>
-<ul>
-<li>Use <code>assert()</code> only for debug checks, not for runtime error handling</li>
-<li>Always manage resources via RAII (e.g., smart pointers)</li>
-</ul>
 
 </body>
 </html>
